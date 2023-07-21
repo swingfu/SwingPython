@@ -10,8 +10,10 @@ def is_float_digit(n: str) -> bool:
     except ValueError:
         return False
 
+print("Please input a list of numbers:\n")
+
 while True: 
-    x = input("Please input a list of numbers")
+    x = input()
     if len(x) == 0 : 
         Count = len(cal_list)
         Sum = sum(cal_list)
@@ -24,8 +26,7 @@ while True:
     else :
         if is_float_digit(x) == False :
             print("Invalid number.")
-            break
-        elif is_float_digit(x) == True :
-            x = float(x)
-            cal_list.append(x)
-            print(cal_list)
+        else:
+            y = float(x)
+            cal_list.append(y)
+            # print(cal_list)
