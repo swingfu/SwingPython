@@ -12,7 +12,7 @@ class Contact:
     def setPhone(self, phone) -> None:
             try: 
                intphone = int(phone)
-               self.phone = phone
+               self.phone = phone.strip()
             except ValueError:
                 print("Invalid format")
 
@@ -33,6 +33,13 @@ class ContactBook:
     def __init__(self):
          self.contactList = []
     
+    def search_Phone(self,check_phone) -> int:
+        for i in range(len(self.contactList)):
+            r = self.contactList[i]
+            if check_phone == r.phone:
+                return i
+        return -1
+
 # add a new contact into the contact list
     def add_Data(self):
         
@@ -40,23 +47,27 @@ class ContactBook:
 
         # to format the user's input 
         txt = input()
-        new_phone = txt.split(";")[0]
-        new_sex = txt.split(";")[1]
-        new_name = txt.split(";")[2]
+        # print(txt.count(';'))
+
+        if txt.count(';') >= 2:
+            new_phone = txt.split(";")[0]
+            new_sex = txt.split(";")[1]
+            new_name = txt.split(";")[2]
+        else:
+            print("Invalid format.")
+            return
+        
+        i = self.search_Phone(new_phone)
+
+        if i >= 0 :
+            print("Phone number already exists.")
+            return
 
         c = Contact(new_phone, new_sex, new_name)
-        # c.print()
         
-        # to check if the phone number alreay exist
-        for i in range(len(self.contactList)):
-            x = self.contactList[i]
-            if new_phone == x.phone:
-                print("Phone number already exists.")
-                return
         self.contactList.append(c)
 
-        n = str(len(self.contactList))
-        print("New contact added. Total count is " + n + ".")
+        print("New contact added. Total count is {}.".format(len(self.contactList)))
 
 
 
@@ -66,24 +77,24 @@ class ContactBook:
         print("Please input the phone number to view: \n ")
 
         check_phone = input()
+        try: 
+            intphone = int(check_phone)
+        except ValueError:
+            print("Invalid format")
+            return
 
-        for i in range(len(self.contactList)):
-            r = self.contactList[i]
-            if check_phone == r.phone:
-                r.print()
-                return
-            
-        print("Contact not found")
-
-
+        i = self.search_Phone(check_phone)
+        if (i < 0):
+            print("Contact not found")
+        else:
+            self.contactList[i].print()
+        
 
 # list all the data from the contact list
     def list_Data(self):
-        for i in range(0, len(self.contactList)):
-            l = self.contactList[i]
-            l.print()
-        n = str(len(self.contactList))
-        print( n + " contact(s) displayed.")
+        for x in self.contactList:
+            x.print()
+        print( "{} contact(s) displayed.".format(len(self.contactList)))
             
 
 # delete data from the contact list
@@ -91,43 +102,49 @@ class ContactBook:
         print("Please input the phone number to delete")
 
         del_phone = input()
+        try: 
+            intphone = int(del_phone)
+        except ValueError:
+            print("Invalid format")
+            return
+        
+        i = self.search_Phone(del_phone)
+        e = self.contactList[i]
+        e.print()
 
-        for i in range(len(self.contactList)):
-            d = self.contactList[i]
-            if del_phone == d.phone:
-                d.print()
-                # print(d.phone + " " + d.sex + " "+ d.name)
-                self.contactList.remove(d)
-                n = str(len(self.contactList))
-                print("Contact deleted. Total count is" + n + ".")
-                return
-        print("Contact not found")
-
+        self.contactList.pop(i)
+        print("Contact deleted. Total count is {}.".format(len(self.contactList)))
+        return
+    
 # edit data from the contact list
     def edit_Data(self):
         print("Please input the phone number to update")
 
         update_phone = input()
+        try: 
+            intphone = int(update_phone)
+        except ValueError:
+            print("Invalid format")
+            return
+        
+        i = self.search_Phone(update_phone)
+        if (i < 0):
+            print("Contact not found")
+            return
 
-        for i in range(len(self.contactList)):
-            e = self.contactList[i]
-            if update_phone == e.phone:
-                print("Update sex: \n ")
-                update_sex = input()
-                print("Update name")
-                update_name = input()
-                self.contactList.remove(e)
+        e = self.contactList[i]
 
-                e.setPhone(update_phone)
-                e.setSex(update_sex)
-                e.name = update_name
-                self.contactList.insert(i,e)
-                print("Contact updated.")
-                e.print()
-                return
-                # print(e.phone + " "+ e.setSex + " " + e.name)
-
-        print("Contact not found")
+        print("Update sex: \n ")
+        update_sex = input()
+        print("Update name")
+        update_name = input()
+        #self.contactList.remove(e)
+        e.setPhone(update_phone)
+        e.setSex(update_sex)
+        e.name = update_name
+        #self.contactList.insert(i,e)
+        print("Contact updated.")
+        e.print()
 
 
 y = ContactBook()
