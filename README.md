@@ -18,10 +18,12 @@ The practices are from easy to hard, generally, you can simple follow the [Pytho
    - List or Dictionary to store data
    - the usage of functions
 
-4. keep updating...
+4. Implement a Dialpad utility funcation that can be used by apps.
+   - Iteration
+   - using Dictionary
 
 check the file /spec. for detailed specifications.
-check the file /src. for sample codes. 
+check the file /src/package_Swing. for sample codes. 
 Notice that the code isn't always perfect, you can write your own code using what you've learned. What really matters is keeping learning and practice.
 
 let's learn Python together! Fighting!~ :P
