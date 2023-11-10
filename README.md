@@ -22,6 +22,17 @@ The practices are from easy to hard, generally, you can simple follow the [Pytho
    - Iteration
    - using Dictionary
 
+5. Implement a function to fetch GitHub profile information for a given username.
+   - Basic HTTP and JSON libraries
+   - Dataclass
+
+6. Implement a function to fetch Chinese city weather information for a given city.
+   - Basic HTTP and JSON libraries
+   - Using Aliyun account and APIs
+
+7. Implement a simple Contact List with data persisted in MongoDB.
+
+
 check the file /spec. for detailed specifications.
 check the file /src/package_Swing. for sample codes. 
 Notice that the code isn't always perfect, you can write your own code using what you've learned. What really matters is keeping learning and practice.
