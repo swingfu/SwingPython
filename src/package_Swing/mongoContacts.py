@@ -14,6 +14,7 @@ try:
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
+    
 
 # Create an instance of the Mongo database
 db = client.contactList
@@ -90,7 +91,7 @@ class Contact:
                intphone = int(phone)
                self.phone = phone.strip()
             except ValueError:
-                print("Invalid format")
+                raise ValueError("Invalid format")
 
 # check the format of user input for sex      
     def setSex(self, sex) -> None: 
@@ -99,7 +100,8 @@ class Contact:
             self.sex = 'Female'
         elif upper == 'M' or upper == 'MALE':
             self.sex = 'Male'
-        else: print("Invalid format")
+        else: 
+            raise ValueError("Invalid format")
 
 
 # Define functions for operations       
@@ -114,9 +116,9 @@ def add_Data(new_phone, new_sex, new_name) -> None:
     c = Contact(new_phone, new_sex, new_name)
 
     contactItem ={
-    "Phone": c.phone,
-    "Sex": c.sex,
-    "Name": c.name,
+        "Phone": c.phone,
+        "Sex": c.sex,
+        "Name": c.name,
     }
 
     contactData.insert_one(contactItem)
