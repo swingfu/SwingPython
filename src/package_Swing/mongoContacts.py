@@ -14,6 +14,7 @@ try:
     print("Pinged your deployment. You successfully connected to MongoDB!")
 except Exception as e:
     print(e)
+    
 
 # Create an instance of the Mongo database
 db = client.contactList
@@ -75,6 +76,7 @@ def contactBook():
             case _:
                 print("Invalid operation.")
 
+
 # Define the class for datastructure
 class Contact:
 
@@ -89,7 +91,7 @@ class Contact:
                intphone = int(phone)
                self.phone = phone.strip()
             except ValueError:
-                print("Invalid format")
+                raise ValueError("Invalid format")
 
 # check the format of user input for sex      
     def setSex(self, sex) -> None: 
@@ -98,7 +100,8 @@ class Contact:
             self.sex = 'Female'
         elif upper == 'M' or upper == 'MALE':
             self.sex = 'Male'
-        else: print("Invalid format")
+        else: 
+            raise ValueError("Invalid format")
 
 
 # Define functions for operations       
@@ -106,16 +109,16 @@ class Contact:
 def add_Data(new_phone, new_sex, new_name) -> None:
     
     # check if the contact item already exists 
-    if contactData.count_documents({"Phone": new_phone}) > 0:
+    if contactData.find_one({"Phone": new_phone}) != None:
         print("Phone number already exists.")
         return
 
     c = Contact(new_phone, new_sex, new_name)
 
     contactItem ={
-    "Phone": c.phone,
-    "Sex": c.sex,
-    "Name": c.name,
+        "Phone": c.phone,
+        "Sex": c.sex,
+        "Name": c.name,
     }
 
     contactData.insert_one(contactItem)
@@ -125,9 +128,8 @@ def add_Data(new_phone, new_sex, new_name) -> None:
 # Read a contact item from the contact List
 def read_Data(check_phone) -> None:
 
-    result = contactData.count_documents({"Phone": check_phone}, limit = 1)
-    if result != 0:
-        item = contactData.find_one({"Phone": check_phone})
+    item = contactData.find_one({"Phone": check_phone})
+    if item != None:
         pprint.pprint(item)
     else:
         print("Contact not found")
@@ -143,9 +145,9 @@ def list_Data():
 # Delete data from the contact list
 def delete_Data(check_phone):
 
-    result = contactData.count_documents({"Phone": check_phone}, limit = 1)
-    if result != 0:
-        contactData.delete_one({"Phone": check_phone})
+    result = contactData.delete_one({"Phone": check_phone})
+
+    if result.deleted_count != 0:
         print("Contact deleted. Total count is {}.".format(contactData.count_documents({})))
         return
     else: 
@@ -155,8 +157,8 @@ def delete_Data(check_phone):
 # Edit data from the contact list
 def edit_Data(check_phone):
     
-    result = contactData.count_documents({"Phone": check_phone}, limit = 1)
-    if result != 0:
+    item = contactData.find_one({"Phone": check_phone})
+    if item != None:
         print("Update sex: \n ")
         update_sex = input()
         print("Update name: \n ")
